@@ -1,5 +1,7 @@
 package com.spring.dependency;
 
+import javax.inject.Inject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -7,7 +9,10 @@ import org.springframework.stereotype.Component;
 @Component("tv") // 빈(인스턴스)생성 ==> SamsungTV 객체 생성
 public class SamsungTV implements TV {
 	
-	@Autowired // 주입(스프링 컨테이너가 관리하는 빈 중에서 하나가 주입됨)
+	// @Inject(자바에서 제공) == @Autowired(스프링프레임워크에서 제공)
+	
+	@Inject
+	//@Autowired // 주입(스프링 컨테이너가 관리하는 빈 중에서 하나가 주입됨)
 	@Qualifier("apple")
 	private Speaker speaker; // has-a(포함) 관계
 		
