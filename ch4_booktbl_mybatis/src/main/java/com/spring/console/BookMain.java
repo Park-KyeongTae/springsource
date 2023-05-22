@@ -20,17 +20,17 @@ public class BookMain {
 		BookService service = (BookService)ctx.getBean("bookService");
 //		
 //		// 도서 추가
-//		BookDTO insertDto = new BookDTO(7008, "스프링", "박경태", 1000, "스프링2일차");
-//		if (service.insertBook(insertDto)) {
-//			System.out.println("입력성공");
-//		}
+		BookDTO insertDto = new BookDTO(9872, "2223", "축구는 나폴리", 1000, "챔스우승");
+		if (service.insertBook(insertDto)) {
+			System.out.println("입력성공");
+		}
 //		
 //		// 도서 수정 
 //		BookDTO updateDto = new BookDTO();
 //		updateDto.setCode(7007);
 //		updateDto.setPrice(10000);
-		if (service.updateBook(30000,7008)) {
-			System.out.println("수정성공");
+//		if (service.updateBook(30000,7008)) {
+//			System.out.println("수정성공");
 		}
 //		
 //		// 특정 도서 조회
@@ -52,4 +52,4 @@ public class BookMain {
 //			System.out.println(bookDTO);
 //		}
 	}
-}
+
