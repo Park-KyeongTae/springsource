@@ -29,24 +29,19 @@
 		<include refid="criteria"></include>
 		bno > 0
 	</select>
-	
-	
-	<!-- 댓글 수 추가  -->
-	<update id="updateReplyCnt">
-	update spring_board set replycnt = replycnt + #{amount}
-	where bno = #{bno}
-	</update>
-	
-	
-	
 
-	<!-- 동적 쿼리 
-	
-		/board/list?page=1&amount=10&type=W&keyword=홍길동 요청 
-	
-	     collection="typeArr" => Criteria 객체의 getTypeArr() 메소드 실행됨 =[T]
-	     item="type" => 배열 요소를 접근하기 위한 변수
-	-->
+
+	<!-- 댓글 수 추가 -->
+	<update id="updateReplyCnt">
+		update spring_board set replycnt = replycnt + #{amount}
+		where bno = #{bno}
+	</update>
+
+
+
+
+	<!-- 동적 쿼리 /board/list?page=1&amount=10&type=W&keyword=홍길동 요청 collection="typeArr" 
+		=> Criteria 객체의 getTypeArr() 메소드 실행됨 =[T] item="type" => 배열 요소를 접근하기 위한 변수 -->
 	<sql id="criteria">
 		<trim prefix="(" suffix=") AND" prefixOverrides="OR">
 			<foreach collection="typeArr" item="type">
@@ -90,6 +85,34 @@
 	<select id="get" resultType="com.spring.domain.BoardDTO">
 		select bno,title,writer,content from
 		spring_board where bno=#{bno}
+	</select>
+
+	<!-- 특정 번호 조회 + 파일 정보 
+		 property : dto 변수명과 일치
+	-->
+	
+	
+	<resultMap type="com.spring.domain.BoardDTO" id="boardMap">
+	 <result property="title" column="title"/>
+	 <result property="content" column="content"/>
+	 <result property="writer" column="writer"/>
+	 <result property="bno" column="bno"/>
+	 <collection property="attachList" resultMap="attachMap" />
+	</resultMap>
+	
+	<resultMap type="com.spring.domain.AttachFileDTO" id="attachMap">
+	 <result property="uuid" column="uuid"/>
+	 <result property="uploadPath" column="uploadPath"/>
+	 <result property="fileName" column="fileName"/>
+	 <result property="fileType" column="fileType"/>
+	 <result property="bno" column="bno"/>
+	</resultMap>
+	
+	
+	<select id="readAttach" resultMap="boardMap">
+		SELECT title,content,writer,sa.bno,uuid,uploadpath,filetype,filename
+		FROM spring_board sb JOIN spring_attach sa ON sb.bno = sa.bno
+		where sb.bno=#{bno}
 	</select>
 
 	<!-- 글 수정 : bno 일치 시 (title, content, updatedate) -->
